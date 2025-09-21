@@ -16,6 +16,12 @@ navi('/verturnos')
 navi('/gestiondias')
     
   }
+
+      const Catalogo =() => {
+navi('/gestioncatalogo')
+    
+  }
+
       const Salir =() => {
 navi('/')
     
@@ -41,6 +47,13 @@ navi('/')
             className="bg-pink-400 hover:bg-pink-500 text-white font-bold py-3 px-6 rounded-lg shadow-md transition"
           >
             Gestionar Días
+          </button>
+
+           <button
+            onClick={Catalogo}
+            className="bg-pink-400 hover:bg-pink-500 text-white font-bold py-3 px-6 rounded-lg shadow-md transition"
+          >
+            Gestionar Catalogo
           </button>
 
            <button

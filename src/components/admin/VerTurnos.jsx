@@ -5,42 +5,31 @@ import { motion } from "framer-motion";
 
 const VerTurnos = () => {
   const [turnos, setTurnos] = useState([]);
-  const [cancelando, setCancelando] = useState(null); // ID del turno que estoy cancelando
-  const [motivo, setMotivo] = useState("");
 
-  // Traer turnos
+  // Función para obtener turnos desde Firestore
   const obtenerTurnos = async () => {
     const snapshot = await getDocs(collection(db, "turnos"));
-    const data = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
-    setTurnos(data);
+    const data = snapshot.docs.map((docSnap) => ({ id: docSnap.id, ...docSnap.data() }));
+
+    // Convertimos la fecha a objeto Date y ordenamos ascendente (más cercano primero)
+    const dataOrdenada = data
+      .map((t) => ({ ...t, fechaObj: new Date(t.fecha) }))
+      .sort((a, b) => a.fechaObj - b.fechaObj);
+
+    setTurnos(dataOrdenada);
   };
 
   useEffect(() => {
     obtenerTurnos();
   }, []);
 
-  // Eliminar y abrir WhatsApp
-  const cancelarTurno = async (turno) => {
+  // Función para eliminar un turno
+  const eliminarTurno = async (turno) => {
     try {
-      // ✅ Eliminar de Firestore
       await deleteDoc(doc(db, "turnos", turno.id));
-
-      // ✅ Armar mensaje de WhatsApp
-      const mensaje = encodeURIComponent(
-        `Hola ${turno.nombre}, lamentamos informarte que tu turno del día ${turno.fecha} a las ${turno.hora} fue cancelado. Motivo: ${motivo}. Por favor elegí otro día.`
-      );
-
-      // ✅ Abrir WhatsApp
-      window.open(`https://wa.me/+549${turno.telefono}?text=${mensaje}`, "_blank");
-
-      // Limpiar estados
-      setMotivo("");
-      setCancelando(null);
-
-      // Refrescar lista
       obtenerTurnos();
     } catch (error) {
-      console.error("Error al cancelar turno:", error);
+      console.error("Error al eliminar turno:", error);
     }
   };
 
@@ -50,58 +39,47 @@ const VerTurnos = () => {
         Turnos Agendados
       </h1>
 
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {turnos.map((turno) => (
-          <motion.div
-            key={turno.id}
-            className="bg-red-200 rounded-2xl shadow-lg p-4 text-black flex flex-col justify-between"
-            whileHover={{ scale: 1.02 }}
-          >
-            <div>
-              <p className="text-2xl font-semibold uppercase">{turno.nombre}</p>
-              <p className="text-1xl">📅 {turno.fecha}</p>
-              <p className="text-1xl">⏰ {turno.hora}</p>
-              <p className="text-1xl">📱 {turno.telefono}</p>
-            </div>
+    <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+  {turnos.length === 0 ? (
+    <p className="text-white text-center col-span-full text-xl font-semibold  ">
+      ¡No hay turnos disponibles!
+    </p>
+  ) : (
+    turnos.map((turno) => (
+      <motion.div
+        key={turno.id}
+        className="relative bg-red-200 rounded-2xl shadow-lg p-4 text-black flex flex-col justify-between"
+        whileHover={{ scale: 1.02 }}
+      >
+        {/* Cruz roja en esquina superior derecha */}
+        <button
+          onClick={() => eliminarTurno(turno)}
+          className="absolute top-2 right-2 text-white bg-red-600 hover:bg-red-700 rounded-full w-8 h-8 flex items-center justify-center font-bold shadow"
+        >
+          ×
+        </button>
 
-            {cancelando === turno.id ? (
-              <div className="mt-4">
-                <textarea
-                  className="w-full p-2 rounded-lg text-black mb-2 bg-gray-300"
-                  rows="2"
-                  placeholder="Motivo de la cancelación..."
-                  value={motivo}
-                  onChange={(e) => setMotivo(e.target.value)}
-                />
-                <div className="flex gap-2">
-                  <button
-                    onClick={() => cancelarTurno(turno)}
-                    className="flex-1 bg-pink-600 hover:bg-pink-700 text-white py-2 rounded-lg shadow"
-                  >
-                    Enviar
-                  </button>
-                  <button
-                    onClick={() => {
-                      setCancelando(null);
-                      setMotivo("");
-                    }}
-                    className="flex-1 bg-gray-600 hover:bg-gray-700 text-white py-2 rounded-lg shadow"
-                  >
-                    Cancelar
-                  </button>
-                </div>
-              </div>
-            ) : (
-              <button
-                onClick={() => setCancelando(turno.id)}
-                className="mt-4 w-full bg-pink-600 hover:bg-pink-700 text-white py-2 rounded-lg shadow"
-              >
-                Cancelar Turno
-              </button>
-            )}
-          </motion.div>
-        ))}
-      </div>
+        <div className="flex items-center gap-4">
+          <div className="flex-1">
+            <p className="text-2xl font-semibold uppercase">{turno.nombre}</p>
+            <p className="text-1xl">📅 {turno.fechaObj.toLocaleDateString("es-AR")}</p>
+            <p className="text-1xl">⏰ {turno.hora}</p>
+            <p className="text-1xl">📱 {turno.whatsapp}</p>
+          </div>
+
+          {turno.modelo && (
+            <img
+              src={turno.modelo}
+              alt={turno.nombre}
+              className="w-24 h-24 rounded-xl object-cover"
+            />
+          )}
+        </div>
+      </motion.div>
+    ))
+  )}
+</div>
+
     </div>
   );
 };

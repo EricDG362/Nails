@@ -5,6 +5,8 @@ import Login from "./components/admin/Login";
 import Turnos from './components/admin/Turnos';
 import GestionarDias from "./components/admin/Gestionardias";
 import VerTurnos from "./components/admin/VerTurnos";
+import VerCatalogo from "./components/admin/VerCatalogo";
+
 
 function App() {
   return (
@@ -14,6 +16,10 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/turnos" element={<Turnos />} />
         <Route path="/gestiondias" element={<GestionarDias />} />
+
+         <Route path="/gestioncatalogo" element={<VerCatalogo />} />
+
+
         <Route path="/verturnos" element={<VerTurnos />} />
 
 

@@ -95,7 +95,7 @@ const TurnoWizar = () => {
       </motion.div>
 
       {/* caja de botones */}
-      <div className="absolute bottom-40 w-full px-6 flex justify-between">
+      <div className="absolute bottom-24 w-full px-6 flex justify-between">
         {/* botón atrás (oculto en el paso 0) */}
         {step !== 0 ? (
           <button
