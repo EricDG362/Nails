@@ -6,25 +6,23 @@ import Turnos from './components/admin/Turnos';
 import GestionarDias from "./components/admin/Gestionardias";
 import VerTurnos from "./components/admin/VerTurnos";
 import VerCatalogo from "./components/admin/VerCatalogo";
-
+import LayoutAdmin from "./components/utilities/LayoutAdmin";
 
 function App() {
   return (
-    <div>
-      <Routes>
-        <Route path="/" element={<TurnoWizar />} />
-        <Route path="/login" element={<Login />} />
+    <Routes>
+      {/* Pantallas cliente */}
+      <Route path="/" element={<TurnoWizar />} />
+      <Route path="/login" element={<Login />} />
+
+      {/* Pantallas admin con layout */}
+      <Route element={<LayoutAdmin />}>
         <Route path="/turnos" element={<Turnos />} />
-        <Route path="/gestiondias" element={<GestionarDias />} />
-
-         <Route path="/gestioncatalogo" element={<VerCatalogo />} />
-
-
         <Route path="/verturnos" element={<VerTurnos />} />
-
-
-      </Routes>
-    </div>
+        <Route path="/gestiondias" element={<GestionarDias />} />
+        <Route path="/gestioncatalogo" element={<VerCatalogo />} />
+      </Route>
+    </Routes>
   );
 }
 

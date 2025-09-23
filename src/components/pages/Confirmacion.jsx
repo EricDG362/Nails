@@ -18,13 +18,19 @@ const Confirmacion = ({ onReset, setModalConfirmVisible }) => {
     );
   }
 
-  const fechaFormateada = new Date(fecha).toLocaleDateString("es-AR", {
+ 
+
+let fechaFormateada = fecha;
+if (fecha) {
+  const [anio, mes, dia] = fecha.split("-").map(Number);
+  const fechaLocal = new Date(anio, mes - 1, dia);
+  fechaFormateada = fechaLocal.toLocaleDateString("es-AR", {
     weekday: "long",
     year: "numeric",
     month: "long",
     day: "numeric",
   });
-
+}
   const resizeImage = (file, maxSize = 400) =>
     new Promise((resolve) => {
       if (!(file instanceof File)) return resolve(null);

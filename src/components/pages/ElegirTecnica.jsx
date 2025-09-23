@@ -88,7 +88,7 @@ export default function ElegirTecnica({ onNext }) {
       </h2>
 
       {/* Carrusel de catálogo */}
-      <div className="w-full mb-6">
+      <div className="w-full mb-4">
         {loading ? (
           <div className="flex justify-center items-center h-40">
             <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-pink-500"></div>
@@ -128,31 +128,32 @@ export default function ElegirTecnica({ onNext }) {
         )}
       </div>
 
+
+
       {/* Vista previa */}
-      {modelo && (
-        <div className="-mb-18">
-          {tipoModelo === "archivo" && modelo instanceof File ? (
-            <img
-              src={URL.createObjectURL(modelo)}
-              alt="Modelo elegido"
-              className="w-18 h-18 rounded-lg shadow-lg"
-            />
-          ) : (
-            modelo?.imagen && (
-              <img
-                src={modelo.imagen}
-                alt={modelo.titulo || "Modelo elegido"}
-                className="w-18 h-18 rounded-lg shadow-lg"
-              />
-            )
-          )}
-        </div>
-      )}
+{/* Vista previa o placeholder */}
+<div className="flex justify-center items-center -mb-20">
+  {modelo ? (
+    <img
+      src={modelo instanceof File ? URL.createObjectURL(modelo) : modelo.imagen || modelo}
+      alt="Modelo elegido"
+      className="w-28 h-28 rounded-lg shadow-lg object-cover border-2 border-pink-400"
+    />
+  ) : (
+    <div className="w-28 h-28 flex items-center justify-center border-2 border-dashed border-pink-400 rounded-lg bg-gray-100 shadow-inner">
+      <img src="/placeholder.png" alt="Sin imagen" className="w-12 h-12 opacity-50" />
+    </div>
+  )}
+</div>
+
+
+
+
 
       {/* Botón subir imagen */}
       <button
         onClick={abrirSelector}
-        className="bg-pink-500 text-white font-semibold px-6 py-4 rounded-lg shadow-md hover:bg-pink-600 transition mb-10 mt-24"
+        className="bg-pink-500 w-[100%] text-white font-semibold px-6 py-4 rounded-lg shadow-md hover:bg-pink-600 transition mb-6 mt-26"
       >
         2️⃣ O subí una imagen de referencia
       </button>
@@ -168,7 +169,7 @@ export default function ElegirTecnica({ onNext }) {
       {/* O continuar sin imagen */}
       <button
         onClick={continuarSinImagen}
-        className="text-gray-400 underline hover:text-pink-400"
+           className="bg-pink-500 text-white font-semibold px-6 py-4 rounded-lg shadow-md w-[100%] hover:bg-pink-600 transition mb-10"
       >
         3️⃣ O continuá sin elegir imagen
       </button>

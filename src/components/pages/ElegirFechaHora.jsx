@@ -33,14 +33,23 @@ const ElegirFechaHora = () => {
       let diasValidos = [];
       let horariosMap = {};
 
-      for (const d of tempDias) {
-        const fechaStr = d.toISOString().split("T")[0];
+     for (const d of tempDias) {
+  const fechaStr = d.toLocaleDateString("en-CA"); // formato ISO local
+  const fechaMostrar = d.toLocaleDateString("es-AR", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+  });
+
+
         const diaDoc = doc(db, "diasDisponibles", fechaStr);
         const diaSnap = await getDoc(diaDoc);
+
 
         if (diaSnap.exists() && diaSnap.data().activo) {
           // Horarios habilitados
           const habilitados = diaSnap.data().horarios || [];
+
 
           // Horarios ocupados en turnos
           const q = query(collection(db, "turnos"), where("fecha", "==", fechaStr));
@@ -51,7 +60,7 @@ const ElegirFechaHora = () => {
           const libres = habilitados.filter(h => !ocupados.includes(h.trim()));
 
           if (libres.length > 0) {
-            diasValidos.push({ fecha: d, fechaStr });
+            diasValidos.push({ fecha: d, fechaStr, fechaMostrar });
             horariosMap[fechaStr] = libres;
           }
         }
@@ -95,13 +104,18 @@ const ElegirFechaHora = () => {
   {/* Selección actual */}
 <div className="text-center mb-6">
   <h2 className="text-lg font-semibold text-pink-600 bg-red-200 rounded-2xl p-2">
-    {fecha && hora
-      ? (() => {
-          const [año, mes, dia] = fecha.split("-").map(Number);
-          const fechaLocal = new Date(año, mes - 1, dia);
-          return `Elegiste: ${fechaLocal.toLocaleDateString("es-AR", { day: "2-digit", month: "2-digit", year: "numeric" })} a las ${hora} hs`;
-        })()
-      : "Elegí una fecha y hora"}
+     {fecha && hora
+  ? (() => {
+      const [anio, mes, dia] = fecha.split("-").map(Number);
+      const fechaLocal = new Date(anio, mes - 1, dia); 
+      return `Elegiste: ${fechaLocal.toLocaleDateString("es-AR", {
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric",
+      })} a las ${hora} hs`;
+    })()
+  : "Elegí una fecha y hora"}
+
   </h2>
 </div>
 

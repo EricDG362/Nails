@@ -22,7 +22,7 @@ const Login = () => {
     try {
       setLoading(true); // activamos spinner
       await signInWithEmailAndPassword(auth, mail, contrasena);
-      navigate("/turnos");
+      navigate("/gestiondias");
     } catch (err) {
       console.error(err);
       setError("Email o contraseña incorrectos.");
