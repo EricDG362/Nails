@@ -16,6 +16,8 @@ const TurnoWizar = () => {
   const [step, setStep] = useState(0);
   const [cargando, setCargando] = useState(false);
   const [modalConfirmVisible, setModalConfirmVisible] = useState(false);
+  const [datosTurno, setDatosTurno] = useState(null);
+
   
 
   // const turno = useTurnoStore(); // accede a todos los datos del store para el console log
@@ -59,7 +61,9 @@ const TurnoWizar = () => {
     <ElegirTecnica onNext={next} />,
     <ElegirFechaHora onNext={next} />,
     <DatosCliente onNext={next} />,
-    <Confirmacion onReset={reiniciarTurno} setCargando={setCargando} setModalConfirmVisible={setModalConfirmVisible}  />,
+    <Confirmacion onReset={reiniciarTurno} setCargando={setCargando} setModalConfirmVisible={setModalConfirmVisible}
+     setDatosTurno={setDatosTurno}
+       />,
   ];
 
 
@@ -73,7 +77,12 @@ const TurnoWizar = () => {
   return (
   <>
     <ModalCarga visible={cargando} />
-    <ModalConfirmacion visible={modalConfirmVisible} onAceptar={onAceptar} />
+
+    <ModalConfirmacion visible={modalConfirmVisible}
+     onAceptar={onAceptar} 
+      datosTurno={datosTurno} 
+       onCerrar={() => setModalConfirmVisible(false)}
+    />
 
     <div className="overflow-hidden w-screen h-screen bg-gradient-to-br from-fuchsia-800 via-pink-900 to-rose-900 relative">
 

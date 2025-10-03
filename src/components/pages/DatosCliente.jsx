@@ -37,33 +37,41 @@ const DatosCliente = ({ onNext }) => {
     if (onNext) onNext(); // Avanza a la siguiente pantalla
   };
 
-  return (
-    <div className="flex flex-col gap-4 p-4 max-w-md mx-auto mb-16">
-      <h2 className="text-4xl font-bold text-center mb-6 text-white tracking-wider font-[Bebas_Neue]">
-        INGRESA TUS DATOS
-      </h2>
+return (
+  <div className="flex flex-col gap-4 p-5 w-[90%] max-w-md mx-auto mb-16 bg-gradient-to-b from-red-100 to-pink-100 rounded-2xl shadow-lg shadow-pink-300/40">
+    <h2 className="text-4xl font-bold text-center mb-6 text-pink-600 tracking-wider font-[Bebas_Neue] animate-pulse">
+      INGRESA TUS DATOS
+    </h2>
 
-      <input
-        type="text"
-        value={nombre}
-        onChange={(e) => setNombre(e.target.value)}
-        placeholder="Nombre"
-        className="p-3 rounded-lg bg-zinc-800 text-white placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-amber-500 transition"
-      />
+    <input
+      type="text"
+      value={nombre}
+      onChange={(e) => setNombre(e.target.value)}
+      placeholder="Nombre"
+      className="p-3 rounded-lg text-center uppercase  bg-white/40  border-2
+       text-pink-800 placeholder-pink-500 focus:outline-none focus:ring-2 focus:ring-pink-400 focus:shadow-[0_0_10px_rgba(255,105,180,0.5)] transition"
+    />
 
-      <input
-        type="tel"
-        value={whatsapp}
-        onChange={handleWhatsappChange}
-        placeholder="WhatsApp (10 dígitos)"
-        maxLength={10}
-        className="p-3 rounded-lg bg-zinc-800 text-white placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-amber-500 transition"
-      />
-      {error && <p className="text-red-500 text-sm">{error}</p>}
+    <input
+      type="tel"
+      value={whatsapp}
+      onChange={handleWhatsappChange}
+      placeholder="WhatsApp (10 dígitos)"
+      maxLength={10}
+      className="p-3 rounded-lg text-center bg-white/40 border-2 text-pink-800 placeholder-pink-500 focus:outline-none focus:ring-2 focus:ring-pink-400 focus:shadow-[0_0_10px_rgba(255,105,180,0.5)] transition"
+    />
 
-    
-    </div>
-  );
+    {error && <p className="text-red-500 text-sm text-center">{error}</p>}
+  </div>
+);
+
+
+
+
+
+
+
+
 };
 
 export default DatosCliente;

@@ -14,7 +14,7 @@ const Home = ({ onNext }) => {
 
 return (
   <div
-    className="relative w-full h-[110%] mt-8 flex items-center justify-center bg-cover bg-center"
+    className="relative w-full h-[110%] mt-8 md:w-[40%] flex items-center justify-center bg-cover bg-center"
     style={{ backgroundImage: "url('u2.jpg')" }} // tu imagen de fondo
   >
     {/* //desde aca */}
